@@ -17,11 +17,20 @@ export class Game extends Engine {
     startGame() {
         console.log("start de game!")
         const fish = new Actor()
+        
         fish.graphics.use(Resources.Fish.toSprite())
         fish.pos = new Vector(500, 300)
-        fish.vel = new Vector(-10,0)
+        fish.vel = new Vector(-18,0)
         fish.events.on("exitviewport", (e) => this.fishLeft(e))
         this.add(fish)
+
+        const fish1 = new Actor()
+        
+        fish1.graphics.use(Resources.fish1.toSprite())
+        fish1.pos = new Vector(200, 100)
+        fish1.vel = new Vector(-18,0)
+        fish1.events.on("exitviewport", (e) => this.fishLeft(e))
+        this.add(fish1)
     }
 
     fishLeft(e) {
