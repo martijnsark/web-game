@@ -24,5 +24,3 @@
 
 Verwijder deze instructies, plaats hier een beschrijving van jouw game.
 
-
-test 1 2 3
