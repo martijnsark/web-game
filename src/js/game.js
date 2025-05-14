@@ -1,8 +1,13 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode } from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, Label, FontUnit, Color, Font } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
+import { Fish } from './fish.js'
+import { WaterBackground } from './background.js' 
+import { Player } from './player.js' 
 
 export class Game extends Engine {
+    score = 0
+    scoreLabel
 
     constructor() {
         super({
@@ -15,45 +20,38 @@ export class Game extends Engine {
     }
 
     startGame() {
-        console.log("start de game!")
-
-
-        const waterBackground = new Actor({
-            x: 0,
-            y: 0,
-            width: 10,
-            height: 10,
-        });
-        waterBackground.graphics.use(Resources.waterBackground.toSprite())
+        let waterBackground = new WaterBackground()
         this.add(waterBackground)
 
-
+        
         for (let i = 0; i < 10; i++) {
-            const fish = new Actor()
-            fish.graphics.use(Resources.Fish.toSprite())
-            fish.pos = new Vector(Math.random() * 1280, Math.random() * 720)
-            fish.vel = new Vector(Math.random() * -200, 0)
-            fish.events.on("exitviewport", (e) => this.fishLeft(e))
+            let fish = new Fish()
             this.add(fish)
-
-            const fish1 = new Actor()
-            fish1.graphics.use(Resources.Fish1.toSprite())
-            fish1.pos = new Vector(Math.random() * 1280, Math.random() * 720)
-            fish1.vel = new Vector(Math.random() * -200, 0)
-            fish1.events.on("exitviewport", (e) => this.fishLeft(e))
-            this.add(fish1)
-
-            const fish2 = new Actor()
-            fish2.graphics.use(Resources.Fish2.toSprite())
-            fish2.pos = new Vector(Math.random() * 1280, Math.random() * 720)
-            fish2.vel = new Vector(Math.random() * -200, 0)
-            fish2.events.on("exitviewport", (e) => this.fishLeft(e))
-            this.add(fish2)
         }
+
+    
+        this.scoreLabel = new Label({
+            text: 'Score: 0',
+            pos: new Vector(20, 20),
+            font: new Font({
+                family: 'Upheavtt',
+                size: 24,
+                unit: FontUnit.Px,
+                color: Color.Black
+            })
+        })
+
+        this.add(this.scoreLabel)
+        
+
+        let player = new Player()
+        player.game = this
+        this.add(player)
     }
 
-    fishLeft(e) {
-        e.target.pos = new Vector(1350, 300)
+    addScore(points = 1) {
+        this.score += points
+        this.scoreLabel.text = `Score: ${this.score}`
     }
 }
 
