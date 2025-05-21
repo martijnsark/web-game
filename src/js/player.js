@@ -1,6 +1,8 @@
 import { Actor, Vector, Keys, CollisionType } from "excalibur"
 import { Resources, ResourceLoader, } from './resources.js'
 import { Fish } from './fish.js'
+import { Arrow } from './Arrow.js'
+
 
 export class Player extends Actor {
 
@@ -23,6 +25,7 @@ export class Player extends Actor {
         this.leftKey = leftKey
         this.rightKey = rightKey
         this.playerNumber = playerNumber
+        this.lastShotTime = 0;
         console.log(`My name is ${this.name}`)
 
 
@@ -50,6 +53,15 @@ export class Player extends Actor {
         }
     }
 
+    shoot() {
+        const now = Date.now()
+        if (now - this.lastShotTime >= 1100) {
+            this.scene.add(new Arrow(this.pos.x + 10, this.pos.y + 10))
+            this.lastShotTime = now; 
+        }
+    }
+
+
     onPreUpdate(engine) {
         let kb = engine.input.keyboard
         let yspeed = 0
@@ -70,6 +82,10 @@ export class Player extends Actor {
 
         if (kb.isHeld(Keys[this.rightKey])) {
             xspeed = 200
+        }
+
+        if (kb.isHeld(Keys.E)) {
+            this.shoot()
         }
 
         this.vel = new Vector(xspeed, yspeed)

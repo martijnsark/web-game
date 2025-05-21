@@ -20,8 +20,10 @@ export class Game extends Engine {
     }
 
     startGame() {
-        let waterBackground = new WaterBackground()
-        this.add(waterBackground)
+        let waterBackground1 = new WaterBackground(0, 0)
+        let waterBackground2 = new WaterBackground(2655, 0)
+        this.add(waterBackground1)
+        this.add(waterBackground2)
 
 
         for (let i = 0; i < 10; i++) {
@@ -33,8 +35,8 @@ export class Game extends Engine {
         this.ui = new UI(20, 20)
         this.add(this.ui)
 
-        let playerOne = new Player("Timmy", 250, 225, "W", "S", "A", "D", 1)
-        let playerTwo = new Player("Kevin", 100, 100, "Up", "Down", "Left", "Right", 2)
+        let playerOne = new Player("Timmy", 60, 700, "W", "S", "A", "D", 1)
+        let playerTwo = new Player("Kevin", 100, 700, "Up", "Down", "Left", "Right", 2)
         this.add(playerOne)
         this.add(playerTwo)
     }

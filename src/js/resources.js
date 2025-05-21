@@ -8,6 +8,7 @@ const Resources = {
     Fish2: new ImageSource('images/Fish2.png'),
     Fish3: new ImageSource('images/Fish3.png'),
     Fish4: new ImageSource('images/Fish4.png'),
+    Arrow: new ImageSource('images/Arrow.png'),
     Crunch: new Sound('sounds/crunch.mp3'),
     UpHeavtt: new FontSource('fonts/upheavtt.ttf')
 }
