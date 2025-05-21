@@ -13,7 +13,7 @@ export class WaterBackground extends Actor {
     }
 
     backgroundLeft(e) {
-        e.target.pos = new Vector(1850, 0)
+        this.pos = new Vector(1850, 0)
     }
 
     

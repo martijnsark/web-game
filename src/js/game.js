@@ -2,12 +2,12 @@ import '../css/style.css'
 import { Actor, Engine, Vector, DisplayMode, Label, FontUnit, Color, Font } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Fish } from './fish.js'
-import { WaterBackground } from './background.js' 
-import { Player } from './player.js' 
+import { WaterBackground } from './background.js'
+import { Player } from './player.js'
+import { UI } from './ui.js'
 
 export class Game extends Engine {
-    score = 0
-    scoreLabel
+
 
     constructor() {
         super({
@@ -23,36 +23,23 @@ export class Game extends Engine {
         let waterBackground = new WaterBackground()
         this.add(waterBackground)
 
-        
+
         for (let i = 0; i < 10; i++) {
             let fish = new Fish()
             this.add(fish)
         }
 
-    
-        this.scoreLabel = new Label({
-            text: 'Score: 0',
-            pos: new Vector(20, 20),
-            font: new Font({
-                family: 'Upheavtt',
-                size: 24,
-                unit: FontUnit.Px,
-                color: Color.Black
-            })
-        })
 
-        this.add(this.scoreLabel)
-        
+        this.ui = new UI(20, 20)
+        this.add(this.ui)
 
-        let player = new Player()
-        player.game = this
-        this.add(player)
+        let playerOne = new Player("Timmy", 250, 225, "W", "S", "A", "D", 1)
+        let playerTwo = new Player("Kevin", 100, 100, "Up", "Down", "Left", "Right", 2)
+        this.add(playerOne)
+        this.add(playerTwo)
     }
 
-    addScore(points = 1) {
-        this.score += points
-        this.scoreLabel.text = `Score: ${this.score}`
-    }
+
 }
 
 new Game()
