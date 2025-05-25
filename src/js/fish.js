@@ -7,7 +7,7 @@ export class Fish extends Actor {
         super({ width: 100, height: 100, collisionType:CollisionType.Active })
         this.graphics.use(Resources.Fish.toSprite())
         this.scale = new Vector(1, 1)
-        this.pos = new Vector(Math.random() * 1280, 700)
+        this.pos = new Vector(Math.random() * 1535, 1000)
         this.vel = new Vector(-150, 0)
         this.events.on("exitviewport", (e) => this.fishLeft(e))
     }
@@ -20,12 +20,12 @@ export class Fish extends Actor {
 
     diedByPlayer(){
         this.unkill
-        this.pos = new Vector(1350, 700)
+        this.pos = new Vector(1535, 1000)
         this.vel = new Vector(-150, 0)
     }
 
     fishLeft(e) {
-        this.pos = new Vector(1350, 700)
+        this.pos = new Vector(1535, 1000)
         this.vel = new Vector(-150, 0)
     }
 }

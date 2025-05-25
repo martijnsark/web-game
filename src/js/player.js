@@ -16,6 +16,7 @@ export class Player extends Actor {
     playerNumber
 
 
+
     constructor(name, x, y, upKey, downKey, leftKey, rightKey, playerNumber) {
         super({ width: 100, height: 100, collisionType: CollisionType.Active })
         this.name = name;
@@ -57,7 +58,7 @@ export class Player extends Actor {
         const now = Date.now()
         if (now - this.lastShotTime >= 1100) {
             this.scene.add(new Arrow(this.pos.x + 10, this.pos.y + 10))
-            this.lastShotTime = now; 
+            this.lastShotTime = now;
         }
     }
 
@@ -87,8 +88,6 @@ export class Player extends Actor {
         if (kb.isHeld(Keys.E)) {
             this.shoot()
         }
-
-        this.vel = new Vector(xspeed, yspeed)
     }
 
     playerTop(e) {

@@ -11,8 +11,8 @@ export class Game extends Engine {
 
     constructor() {
         super({
-            width: 1280,
-            height: 720,
+            width: 1536,
+            height: 1024,
             maxFps: 60,
             displayMode: DisplayMode.FitScreen
         })
@@ -20,13 +20,13 @@ export class Game extends Engine {
     }
 
     startGame() {
-        let waterBackground1 = new WaterBackground(0, 0)
-        let waterBackground2 = new WaterBackground(2655, 0)
+        let waterBackground1 = new WaterBackground(0, 514)
+        let waterBackground2 = new WaterBackground(1535, 514)
         this.add(waterBackground1)
         this.add(waterBackground2)
 
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 7; i++) {
             let fish = new Fish()
             this.add(fish)
         }
@@ -35,8 +35,8 @@ export class Game extends Engine {
         this.ui = new UI(20, 20)
         this.add(this.ui)
 
-        let playerOne = new Player("Timmy", 60, 700, "W", "S", "A", "D", 1)
-        let playerTwo = new Player("Kevin", 100, 700, "Up", "Down", "Left", "Right", 2)
+        let playerOne = new Player("Timmy", 80, 1000, "W", "S", "A", "D", 1)
+        let playerTwo = new Player("Kevin", 240, 1000, "Up", "Down", "Left", "Right", 2)
         this.add(playerOne)
         this.add(playerTwo)
     }
