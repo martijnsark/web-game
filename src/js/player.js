@@ -1,4 +1,4 @@
-import { Actor, Vector, Keys, CollisionType } from "excalibur"
+import { Actor, Vector, Keys, CollisionType, DegreeOfFreedom } from "excalibur"
 import { Resources, ResourceLoader, } from './resources.js'
 import { Fish } from './fish.js'
 import { Arrow } from './Arrow.js'
@@ -17,26 +17,24 @@ export class Player extends Actor {
 
 
 
-    constructor(name, x, y, upKey, downKey, leftKey, rightKey, playerNumber) {
+    constructor(name, x, y, playerNumber) {
         super({ width: 100, height: 100, collisionType: CollisionType.Active })
         this.name = name;
         this.score = 0;
-        this.upKey = upKey
-        this.downKey = downKey
-        this.leftKey = leftKey
-        this.rightKey = rightKey
         this.playerNumber = playerNumber
         this.lastShotTime = 0;
-        console.log(`My name is ${this.name}`)
-
-
+        this.initialX = x;
+        this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
         this.graphics.use(Resources.Fish1.toSprite())
-        this.scale = new Vector(1, 1)
+        this.scale = new Vector(2, 2)
+        this.gravity = new Vector(0, 800),
         this.pos = new Vector(x, y)
         this.vel = new Vector(1, 0)
 
         this.events.on("exitviewport", (e) => this.playerTop(e))
         this.events.on("exitviewport", (e) => this.playerDown(e))
+
+        console.log(`My name is ${this.name}`)
     }
 
     onInitialize(engine) {
@@ -65,29 +63,24 @@ export class Player extends Actor {
 
     onPreUpdate(engine) {
         let kb = engine.input.keyboard
-        let yspeed = 0
-        let xspeed = 0
+        this.pos.x = this.initialX;
 
-        //it fills the correct key based on what you enterd in the variable (game.js)
-        if (kb.isHeld(Keys[this.upKey])) {
-            yspeed = -200
-        }
-
-        if (kb.isHeld(Keys[this.downKey])) {
-            yspeed = 200
-        }
-
-        if (kb.isHeld(Keys[this.leftKey])) {
-            xspeed = -200
-        }
-
-        if (kb.isHeld(Keys[this.rightKey])) {
-            xspeed = 200
-        }
-
-        if (kb.isHeld(Keys.E)) {
+        //simpel shooting
+        if (this.playerNumber === 1 && engine.input.keyboard.wasPressed(Keys.E)) {
             this.shoot()
         }
+        if (this.playerNumber === 2 && engine.input.keyboard.wasPressed(Keys.Enter)) {
+           this.shoot()
+        }
+
+        if (this.playerNumber === 1 && engine.input.keyboard.wasPressed(Keys.Space)) {
+            this.body.applyLinearImpulse(new Vector(0, -6000))
+        }
+
+        if (this.playerNumber === 2 && engine.input.keyboard.wasPressed(Keys.ShiftRight)) {
+            this.body.applyLinearImpulse(new Vector(0, -6000))
+        }
+
     }
 
     playerTop(e) {
