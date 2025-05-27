@@ -5,7 +5,7 @@ import { Fish } from './fish.js'
 import { WaterBackground } from './background.js'
 import { Player } from './player.js'
 import { UI } from './ui.js'
-import { Floor } from './floor.js'
+import { Floor } from './Floor.js'
 
 export class Game extends Engine {
 
