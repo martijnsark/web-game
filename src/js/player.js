@@ -2,6 +2,7 @@ import { Actor, Vector, Keys, CollisionType, DegreeOfFreedom } from "excalibur"
 import { Resources, ResourceLoader, } from './resources.js'
 import { Fish } from './fish.js'
 import { Arrow } from './Arrow.js'
+import { Floor } from './Floor.js'
 
 
 export class Player extends Actor {
@@ -14,6 +15,7 @@ export class Player extends Actor {
     leftKey
     rightKey
     playerNumber
+    isOnGround
 
 
 
@@ -27,9 +29,10 @@ export class Player extends Actor {
         this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
         this.graphics.use(Resources.Fish1.toSprite())
         this.scale = new Vector(2, 2)
-        this.gravity = new Vector(0, 800),
+        this.gravity = new Vector(0, 800)
         this.pos = new Vector(x, y)
         this.vel = new Vector(1, 0)
+        this.isOnGround = true;
 
         this.events.on("exitviewport", (e) => this.playerTop(e))
         this.events.on("exitviewport", (e) => this.playerDown(e))
@@ -42,6 +45,9 @@ export class Player extends Actor {
     }
 
     hitSomething(event) {
+        if (event.other.owner instanceof Floor) {
+            this.isOnGround = true;
+        }
         if (event.other.owner instanceof Fish) {
             event.other.owner.diedByPlayer();
             Resources.Crunch.play(0.5);
@@ -60,25 +66,32 @@ export class Player extends Actor {
         }
     }
 
+    jump() {
+        if (this.isOnGround) {
+            this.body.applyLinearImpulse(new Vector(0, -6000));
+            this.isOnGround = false;
+        }
+    }
+
 
     onPreUpdate(engine) {
         let kb = engine.input.keyboard
         this.pos.x = this.initialX;
 
         //simpel shooting
-        if (this.playerNumber === 1 && engine.input.keyboard.wasPressed(Keys.E)) {
+        if (this.playerNumber === 1 && kb.wasPressed(Keys.E)) {
             this.shoot()
         }
-        if (this.playerNumber === 2 && engine.input.keyboard.wasPressed(Keys.Enter)) {
-           this.shoot()
+        if (this.playerNumber === 2 && kb.wasPressed(Keys.Enter)) {
+            this.shoot()
         }
 
-        if (this.playerNumber === 1 && engine.input.keyboard.wasPressed(Keys.Space)) {
-            this.body.applyLinearImpulse(new Vector(0, -6000))
+        if (this.playerNumber === 1 && kb.wasPressed(Keys.Space)) {
+            this.jump()
         }
 
-        if (this.playerNumber === 2 && engine.input.keyboard.wasPressed(Keys.ShiftRight)) {
-            this.body.applyLinearImpulse(new Vector(0, -6000))
+        if (this.playerNumber === 2 && kb.wasPressed(Keys.ShiftRight)) {
+            this.jump()
         }
 
     }
