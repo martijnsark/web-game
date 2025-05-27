@@ -7,9 +7,10 @@ import { Floor } from './Floor.js'
 
 export class Player extends Actor {
 
-    //eigenschappen (deze worden onthouden)
+    //traits (these get rememberd)
     name
     score
+    scoreTimer
     upKey
     downKey
     leftKey
@@ -18,11 +19,12 @@ export class Player extends Actor {
     isOnGround
 
 
-
+    //constructor for player (default features)
     constructor(name, x, y, playerNumber) {
         super({ width: 100, height: 100, collisionType: CollisionType.Active })
         this.name = name;
         this.score = 0;
+        this.scoreTimer = 0;
         this.playerNumber = playerNumber
         this.lastShotTime = 0;
         this.initialX = x;
@@ -37,13 +39,22 @@ export class Player extends Actor {
         this.events.on("exitviewport", (e) => this.playerTop(e))
         this.events.on("exitviewport", (e) => this.playerDown(e))
 
+
         console.log(`My name is ${this.name}`)
     }
 
+
+    //on load register player collisions and score interval
     onInitialize(engine) {
         this.on('collisionstart', (event) => this.hitSomething(event))
+
+        this._scoreInterval = setInterval(() => {
+            this.addScore();
+        }, 1000);
     }
 
+
+    //check collisions between players and other objects
     hitSomething(event) {
         if (event.other.owner instanceof Floor) {
             this.isOnGround = true;
@@ -51,13 +62,12 @@ export class Player extends Actor {
         if (event.other.owner instanceof Fish) {
             event.other.owner.diedByPlayer();
             Resources.Crunch.play(0.5);
-            this.score++
-            if (this.scene.engine.ui) {
-                this.scene.engine.ui.showScore(this.playerNumber, this.score);
-            }
+
         }
     }
 
+
+    //check timer if last bullet not longer than 1100 ago shoot + reset timer
     shoot() {
         const now = Date.now()
         if (now - this.lastShotTime >= 1100) {
@@ -66,12 +76,24 @@ export class Player extends Actor {
         }
     }
 
+
+    //if on ground jump and reset on ground status
     jump() {
         if (this.isOnGround) {
-            this.body.applyLinearImpulse(new Vector(0, -6000));
+            this.body.applyLinearImpulse(new Vector(0, -10000));
             this.isOnGround = false;
         }
     }
+
+
+    //add points and to scoreboard
+    addScore() {
+        this.score++;
+        if (this.scene.engine.ui) {
+            this.scene.engine.ui.showScore(this.playerNumber, this.score);
+        }
+    }
+
 
 
     onPreUpdate(engine) {
@@ -96,11 +118,15 @@ export class Player extends Actor {
 
     }
 
+
+    //out of screen up reset
     playerTop(e) {
-        this.pos = new Vector(10, 721)
+        this.pos = new Vector(this.initialX, 900)
     }
 
+
+    //out of screen down reset
     playerDown(e) {
-        this.pos = new Vector(10, -1)
+        this.pos = new Vector(this.initialX, 900)
     }
 }
