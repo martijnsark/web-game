@@ -43,8 +43,8 @@ export class Game extends Engine {
         this.ui = new UI(20, 20)
         this.add(this.ui)
 
-        let playerOne = new Player("Timmy", 120, 900, 1)
-        let playerTwo = new Player("Kevin", 400, 900, 2)
+        let playerOne = new Player(120, 900, 1)
+        let playerTwo = new Player(400, 900, 2)
         this.add(playerOne)
         this.add(playerTwo)
     }

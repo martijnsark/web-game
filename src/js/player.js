@@ -8,38 +8,47 @@ import { Floor } from './Floor.js'
 export class Player extends Actor {
 
     //traits (these get rememberd)
-    name
     score
     scoreTimer
-    upKey
-    downKey
-    leftKey
-    rightKey
     playerNumber
     isOnGround
 
 
     //constructor for player (default features)
-    constructor(name, x, y, playerNumber) {
+    constructor(x, y, playerNumber) {
         super({ width: 100, height: 100, collisionType: CollisionType.Active })
-        this.name = name;
+
+        //important requirements for a Actor
+        this.scale = new Vector(1.5, 1.5)
+        this.pos = new Vector(x, y)
+
+        //score variables
         this.score = 0;
         this.scoreTimer = 0;
+
+        //player identifier
         this.playerNumber = playerNumber
-        this.lastShotTime = 0;
+
+        //sprite(s)
+        this.graphics.use(Resources.Fish1.toSprite())
+
+        //restrictions
         this.initialX = x;
         this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
-        this.graphics.use(Resources.Fish1.toSprite())
-        this.scale = new Vector(2, 2)
-        this.gravity = new Vector(0, 800)
-        this.pos = new Vector(x, y)
-        this.vel = new Vector(1, 0)
-        this.isOnGround = true;
 
+        //physics
+        this.gravity = new Vector(0, 800)
+        this.bouncines = 1
+
+        //player status
+        this.isOnGround = true;
+        this.lastShotTime = 0;
+
+        //activate events if user leaves screen (just in case)
         this.events.on("exitviewport", (e) => this.playerTop(e))
         this.events.on("exitviewport", (e) => this.playerDown(e))
 
-
+        //logs
         console.log(`My name is ${this.name}`)
     }
 
@@ -100,7 +109,7 @@ export class Player extends Actor {
         let kb = engine.input.keyboard
         this.pos.x = this.initialX;
 
-        //simpel shooting
+        //simpel shooting based on player and controles
         if (this.playerNumber === 1 && kb.wasPressed(Keys.E)) {
             this.shoot()
         }
@@ -108,6 +117,7 @@ export class Player extends Actor {
             this.shoot()
         }
 
+        //simpel jumping based on player and controles
         if (this.playerNumber === 1 && kb.wasPressed(Keys.Space)) {
             this.jump()
         }
