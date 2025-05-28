@@ -18,6 +18,7 @@ export class UI extends Label {
         this.playerNumber = playerNumber;
     }
 
+    //updates score by entering text + playernumber + actual score
     updateScore(score) {
         this.text = `Score P${this.playerNumber}: ${score}`;
     }

@@ -102,7 +102,7 @@ export class Player extends Actor {
     }
 
 
-    //add points and to scoreboard
+    //add points to correct player and to the correct label
     addScore() {
         this.score++;
         if (this.playerNumber === 1 && this.scene.engine.scoreLabel1) {
@@ -145,6 +145,7 @@ export class Player extends Actor {
         }
     }
 
+    //update player score based on framerate
     onPostUpdate(engine) {
         this.scoreFrameCounter++
         if (this.scoreFrameCounter > 60) {
