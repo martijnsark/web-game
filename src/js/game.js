@@ -26,30 +26,23 @@ export class Game extends Engine {
     }
 
     startGame() {
-        let waterBackground1 = new WaterBackground(0, 514)
-        let waterBackground2 = new WaterBackground(1535, 514)
-        this.add(waterBackground1)
-        this.add(waterBackground2)
+        this.add(new WaterBackground(0, 514))
+        this.add(new WaterBackground(1535, 514))
 
         this.add(new Floor(500, 1080))
         this.add(new Floor(1500, 1080))
+
+        this.add(new UI(20, 20))
+
+        this.add(new Player(120, 900, 1))
+        this.add(new Player(400, 900, 2))
 
         for (let i = 0; i < 5; i++) {
             let fish = new Fish()
             this.add(fish)
         }
-
-
-        this.ui = new UI(20, 20)
-        this.add(this.ui)
-
-        let playerOne = new Player(120, 900, 1)
-        let playerTwo = new Player(400, 900, 2)
-        this.add(playerOne)
-        this.add(playerTwo)
+        
     }
-
-
 }
 
 new Game()
