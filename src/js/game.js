@@ -32,7 +32,9 @@ export class Game extends Engine {
         this.add(new Floor(500, 1080))
         this.add(new Floor(1500, 1080))
 
-        this.add(new UI(20, 20))
+        const ui = new UI(20, 20);
+        this.add(ui);
+        this.ui = ui;
 
         this.add(new Player(120, 900, 1))
         this.add(new Player(400, 900, 2))
@@ -41,7 +43,7 @@ export class Game extends Engine {
             let fish = new Fish()
             this.add(fish)
         }
-        
+
     }
 }
 

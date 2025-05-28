@@ -1,4 +1,4 @@
-import { Actor, Vector, Keys, CollisionType, DegreeOfFreedom } from "excalibur"
+import { Actor, Vector, Keys, CollisionType, DegreeOfFreedom, Timer } from "excalibur"
 import { Resources, ResourceLoader, } from './resources.js'
 import { Fish } from './fish.js'
 import { Arrow } from './Arrow.js'
@@ -7,11 +7,13 @@ import { Floor } from './Floor.js'
 
 export class Player extends Actor {
 
+
     //traits (these get rememberd)
     score
     scoreTimer
     playerNumber
     isOnGround
+    scoreFrameCounter
 
 
     //constructor for player (default features)
@@ -24,25 +26,31 @@ export class Player extends Actor {
 
         //score variables
         this.score = 0;
-        this.scoreTimer = 0;
 
         //player identifier
-        this.playerNumber = playerNumber
+        this.playerNumber = playerNumber;
 
         //sprite(s)
-        this.graphics.use(Resources.Fish1.toSprite())
+        this.graphics.use(Resources.Fish1.toSprite());
 
         //restrictions
         this.initialX = x;
         this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
 
         //physics
-        this.gravity = new Vector(0, 800)
-        this.bouncines = 1
+        this.gravity = new Vector(0, 800);
+        this.bouncines = 1;
 
         //player status
         this.isOnGround = true;
-        this.lastShotTime = 0;
+        this.canShoot = true;
+
+        //timers
+        this.scoreFrameCounter = 0
+        this.shootCooldownTimer = null;
+
+        //shooting
+        this.canShoot = true;
 
         //activate events if user leaves screen (just in case)
         this.events.on("exitviewport", (e) => this.playerTop(e))
@@ -53,13 +61,16 @@ export class Player extends Actor {
     }
 
 
-    //on load register player collisions and score interval
+    //on load register player collisions and player shoot cooldown
     onInitialize(engine) {
         this.on('collisionstart', (event) => this.hitSomething(event))
 
-        this._scoreInterval = setInterval(() => {
-            this.addScore();
-        }, 1000);
+        this.shootCooldownTimer = new Timer({
+            fcn: () => { this.canShoot = true; },
+            interval: 1000,
+            repeats: false
+        });
+        engine.currentScene.add(this.shootCooldownTimer);
     }
 
 
@@ -76,13 +87,9 @@ export class Player extends Actor {
     }
 
 
-    //check timer if last bullet not longer than 1100 ago shoot + reset timer
+    //shoot arrow
     shoot() {
-        const now = Date.now()
-        if (now - this.lastShotTime >= 1100) {
-            this.scene.add(new Arrow(this.pos.x + 10, this.pos.y + 10))
-            this.lastShotTime = now;
-        }
+        this.scene.add(new Arrow(this.pos.x + 10, this.pos.y + 10))
     }
 
 
@@ -108,16 +115,24 @@ export class Player extends Actor {
     onPreUpdate(engine) {
         let kb = engine.input.keyboard
         this.pos.x = this.initialX;
+        this.shootFrameCounter++;
 
         //simpel shooting based on player and controles
-        if (this.playerNumber === 1 && kb.wasPressed(Keys.E)) {
-            this.shoot()
-        }
-        if (this.playerNumber === 2 && kb.wasPressed(Keys.Enter)) {
-            this.shoot()
+        if (this.playerNumber === 1 && kb.wasPressed(Keys.E) && this.canShoot) {
+            this.shoot();
+            this.canShoot = false;
+            this.shootCooldownTimer.reset();
+            this.shootCooldownTimer.start();
         }
 
-        //simpel jumping based on player and controles
+        if (this.playerNumber === 2 && kb.wasPressed(Keys.Enter) && this.canShoot) {
+            this.shoot();
+            this.canShoot = false;
+            this.shootCooldownTimer.reset();
+            this.shootCooldownTimer.start();
+        }
+
+        //simpel jumping based on player and controles + collision with ground
         if (this.playerNumber === 1 && kb.wasPressed(Keys.Space)) {
             this.jump()
         }
@@ -125,15 +140,20 @@ export class Player extends Actor {
         if (this.playerNumber === 2 && kb.wasPressed(Keys.ShiftRight)) {
             this.jump()
         }
-
     }
 
+    onPostUpdate(engine) {
+        this.scoreFrameCounter++
+        if (this.scoreFrameCounter > 60) {
+            this.addScore();
+            this.scoreFrameCounter = 0
+        }
+    }
 
     //out of screen up reset
     playerTop(e) {
         this.pos = new Vector(this.initialX, 900)
     }
-
 
     //out of screen down reset
     playerDown(e) {
