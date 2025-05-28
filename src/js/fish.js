@@ -13,7 +13,7 @@ export class Fish extends Actor {
         this.graphics.use(Resources.Fish.toSprite())
         this.scale = new Vector(1.2, 1.2)
         this.pos = new Vector(Math.random() * 1700, 900)
-        this.vel = new Vector(-500, 0)
+        this.vel = new Vector(-300, 0)
         this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
         this.events.on("exitviewport", (e) => this.fishLeft(e))
         this.body.friction = 0
@@ -21,8 +21,8 @@ export class Fish extends Actor {
 
     //if obstakel not moving reset velocity
     onPreUpdate(engine) {
-        if (this.vel.x >= 0) {
-            this.vel = new Vector(-150, 0)
+        if (this.vel.x > -300) {
+            this.vel = new Vector(-300, 0)
         }
     }
 
@@ -30,12 +30,12 @@ export class Fish extends Actor {
     diedByPlayer() {
         this.unkill
         this.pos = new Vector(1535, 900)
-        this.vel = new Vector(-150, 0)
+        this.vel = new Vector(-300, 0)
     }
 
     //if out screen reset obstakels to repeat cycle
     fishLeft(e) {
         this.pos = new Vector(1535, 900)
-        this.vel = new Vector(-150, 0)
+        this.vel = new Vector(-300, 0)
     }
 }
