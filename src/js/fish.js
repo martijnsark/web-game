@@ -3,6 +3,7 @@ import { Resources, ResourceLoader } from './resources.js'
 
 export class Fish extends Actor {
 
+    //constructor for obstakels (default features)
     constructor() {
         super({
             width: 100,
@@ -18,19 +19,21 @@ export class Fish extends Actor {
         this.body.friction = 0
     }
 
-
+    //if obstakel not moving reset velocity
     onPreUpdate(engine) {
         if (this.vel.x >= 0) {
             this.vel = new Vector(-150, 0)
         }
     }
 
+    //if player killed obstakel reset back alive and position
     diedByPlayer() {
         this.unkill
         this.pos = new Vector(1535, 900)
         this.vel = new Vector(-150, 0)
     }
 
+    //if out screen reset obstakels to repeat cycle
     fishLeft(e) {
         this.pos = new Vector(1535, 900)
         this.vel = new Vector(-150, 0)

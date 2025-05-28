@@ -16,7 +16,7 @@ export class Player extends Actor {
     scoreFrameCounter
 
 
-    //constructor for player (default features)
+    //constructor for players (default features)
     constructor(x, y, playerNumber) {
         super({ width: 100, height: 100, collisionType: CollisionType.Active })
 
@@ -67,7 +67,7 @@ export class Player extends Actor {
 
         this.shootCooldownTimer = new Timer({
             fcn: () => { this.canShoot = true; },
-            interval: 1000,
+            interval: 5000,
             repeats: false
         });
         engine.currentScene.add(this.shootCooldownTimer);
@@ -105,8 +105,11 @@ export class Player extends Actor {
     //add points and to scoreboard
     addScore() {
         this.score++;
-        if (this.scene.engine.ui) {
-            this.scene.engine.ui.showScore(this.playerNumber, this.score);
+        if (this.playerNumber === 1 && this.scene.engine.scoreLabel1) {
+            this.scene.engine.scoreLabel1.updateScore(this.score);
+        }
+        if (this.playerNumber === 2 && this.scene.engine.scoreLabel2) {
+            this.scene.engine.scoreLabel2.updateScore(this.score);
         }
     }
 

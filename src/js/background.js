@@ -3,6 +3,7 @@ import { Resources, ResourceLoader } from './resources.js'
 
 export class WaterBackground extends Actor {
 
+    //constructor for backgrounds (default features)
     constructor(x, y){
         super()
         this.graphics.use(Resources.waterBackground.toSprite())
@@ -12,6 +13,7 @@ export class WaterBackground extends Actor {
         this.events.on("exitviewport", (e) => this.backgroundLeft(e))
     }
 
+    //reset background scroll position
     backgroundLeft(e) {
         this.pos = new Vector(2275, 514)
     }

@@ -1,6 +1,6 @@
 import { ImageSource, Sound, Resource, Loader, FontSource } from 'excalibur'
 
-// voeg hier jouw eigen resources toe
+//recources = list of sprites, sfx and fonts
 const Resources = {
     waterBackground: new ImageSource('images/castleBackground.png'),
     Fish: new ImageSource('images/fish.png'),

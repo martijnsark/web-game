@@ -32,12 +32,13 @@ export class Game extends Engine {
         this.add(new Floor(500, 1080))
         this.add(new Floor(1500, 1080))
 
-        const ui = new UI(20, 20);
-        this.add(ui);
-        this.ui = ui;
+        this.scoreLabel1 = new UI(20, 20, 1, 'Score P1: 0');
+        this.scoreLabel2 = new UI(20, 60, 2, 'Score P2: 0');
+        this.add(this.scoreLabel1);
+        this.add(this.scoreLabel2);
 
-        this.add(new Player(120, 900, 1))
-        this.add(new Player(400, 900, 2))
+        this.add(new Player(120, 900, 1));
+        this.add(new Player(400, 900, 2));
 
         for (let i = 0; i < 5; i++) {
             let fish = new Fish()
