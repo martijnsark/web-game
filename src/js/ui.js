@@ -22,4 +22,9 @@ export class UI extends Label {
     updateScore(score) {
         this.text = `Score P${this.playerNumber}: ${score}`;
     }
+
+    
+    updateLives(lives) {
+       this.text = `P${this.playerNumber} remaining lives: ${lives}`;
+    }
 }

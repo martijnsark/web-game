@@ -10,7 +10,7 @@ export class Player extends Actor {
 
     //traits (these get rememberd)
     score
-    scoreTimer
+    lives
     playerNumber
     isOnGround
     scoreFrameCounter
@@ -27,6 +27,9 @@ export class Player extends Actor {
         //score variables
         this.score = 0;
 
+        //lives
+        this.lives = 3;
+
         //player identifier
         this.playerNumber = playerNumber;
 
@@ -39,7 +42,7 @@ export class Player extends Actor {
 
         //physics
         this.gravity = new Vector(0, 800);
-        this.bouncines = 1;
+        this.bounciness = 1;
 
         //player status
         this.isOnGround = true;
@@ -55,9 +58,6 @@ export class Player extends Actor {
         //activate events if user leaves screen (just in case)
         this.events.on("exitviewport", (e) => this.playerTop(e))
         this.events.on("exitviewport", (e) => this.playerDown(e))
-
-        //logs
-        console.log(`My name is ${this.name}`)
     }
 
 
@@ -81,8 +81,8 @@ export class Player extends Actor {
         }
         if (event.other.owner instanceof Fish) {
             event.other.owner.diedByPlayer();
-            Resources.Crunch.play(0.5);
-
+            this.removeLives();
+            this.playerDied();
         }
     }
 
@@ -105,20 +105,53 @@ export class Player extends Actor {
     //add points to correct player and to the correct label
     addScore() {
         this.score++;
-        if (this.playerNumber === 1 && this.scene.engine.scoreLabel1) {
-            this.scene.engine.scoreLabel1.updateScore(this.score);
+        if (this.playerNumber === 1 && this.scene.scoreLabel1) {
+            this.scene.scoreLabel1.updateScore(this.score);
         }
-        if (this.playerNumber === 2 && this.scene.engine.scoreLabel2) {
-            this.scene.engine.scoreLabel2.updateScore(this.score);
+        if (this.playerNumber === 2 && this.scene.scoreLabel2) {
+            this.scene.scoreLabel2.updateScore(this.score);
         }
     }
+
+
+    //add lives to correct player and to the correct label
+    addLives() {
+        this.lives++;
+        if (this.playerNumber === 1 && this.scene.liveTracker1) {
+            this.scene.liveTracker1.updateLives(this.lives);
+        }
+        if (this.playerNumber === 2 && this.scene.liveTracker2) {
+            this.scene.liveTracker2.updateLives(this.lives);
+        }
+    }
+
+
+    //remove lives to correct player and to the correct label
+    removeLives() {
+        this.lives--;
+        if (this.playerNumber === 1 && this.scene.liveTracker1) {
+            this.scene.liveTracker1.updateLives(this.lives);
+        }
+        if (this.playerNumber === 2 && this.scene.liveTracker2) {
+            this.scene.liveTracker2.updateLives(this.lives);
+        }
+    }
+
+    playerDied() {
+        if (this.lives === 0) {
+            this.kill();
+            if (this.scene.playerDied) {
+                this.scene.playerDied();
+            }
+        }
+    }
+
 
 
 
     onPreUpdate(engine) {
         let kb = engine.input.keyboard
         this.pos.x = this.initialX;
-        this.shootFrameCounter++;
 
         //simpel shooting based on player and controles
         if (this.playerNumber === 1 && kb.wasPressed(Keys.E) && this.canShoot) {

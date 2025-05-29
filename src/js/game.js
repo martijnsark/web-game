@@ -1,11 +1,8 @@
 import '../css/style.css'
 import { Actor, Engine, Vector, DisplayMode, Label, FontUnit, Color, Font, SolverStrategy } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
-import { Fish } from './fish.js'
-import { WaterBackground } from './background.js'
-import { Player } from './player.js'
-import { UI } from './ui.js'
-import { Floor } from './Floor.js'
+import { Level1 } from './level1.js';
+import { GameOver } from './gameover.js';
 
 export class Game extends Engine {
 
@@ -26,25 +23,9 @@ export class Game extends Engine {
     }
 
     startGame() {
-        this.add(new WaterBackground(0, 514))
-        this.add(new WaterBackground(1535, 514))
-
-        this.add(new Floor(500, 1080))
-        this.add(new Floor(1500, 1080))
-
-        this.scoreLabel1 = new UI(20, 20, 1, 'Score P1: 0');
-        this.scoreLabel2 = new UI(20, 60, 2, 'Score P2: 0');
-        this.add(this.scoreLabel1);
-        this.add(this.scoreLabel2);
-
-        this.add(new Player(120, 900, 1));
-        this.add(new Player(400, 900, 2));
-
-        for (let i = 0; i < 5; i++) {
-            let fish = new Fish()
-            this.add(fish)
-        }
-
+        this.add('level1', new Level1());
+        this.add('gameover', new GameOver());
+        this.goToScene('level1');
     }
 }
 
