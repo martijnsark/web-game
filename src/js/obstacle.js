@@ -1,7 +1,7 @@
 import { Actor, Vector, CollisionType, DegreeOfFreedom } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 
-export class Fish extends Actor {
+export class Obstacle extends Actor {
 
     //constructor for obstakels (default features)
     constructor() {

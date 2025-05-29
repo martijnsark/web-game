@@ -1,5 +1,5 @@
 import { Scene } from "excalibur";
-import { Fish } from './fish.js'
+import { Obstacle } from './obstacle.js'
 import { WaterBackground } from './background.js'
 import { Player } from './player.js'
 import { UI } from './ui.js'
@@ -30,8 +30,8 @@ export class Level1 extends Scene {
         this.add(new Player(400, 900, 2));
 
         for (let i = 0; i < 1; i++) {
-            let fish = new Fish()
-            this.add(fish)
+            let obstacle = new Obstacle()
+            this.add(obstacle)
         }
     }
 

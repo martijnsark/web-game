@@ -1,8 +1,11 @@
 import { Scene, Label, Vector, Color, Font, FontUnit } from "excalibur";
+import { UI } from './ui.js'
 
 export class GameOver extends Scene {
+
+
     onInitialize(engine) {
-        const label = new Label({
+        const gameOverLabel = new Label({
             text: "Game Over",
             pos: new Vector(600, 400),
             font: new Font({
@@ -12,6 +15,7 @@ export class GameOver extends Scene {
                 color: Color.Red
             })
         });
-        this.add(label);
+
+        this.add(gameOverLabel);
     }
 }

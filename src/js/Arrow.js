@@ -1,6 +1,6 @@
 import { Actor, Vector, Engine, ExitViewPortEvent } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
-import { Fish } from './fish.js'
+import { Obstacle } from './obstacle.js'
 
 export class Arrow extends Actor {
 
@@ -18,7 +18,7 @@ export class Arrow extends Actor {
     }
 
     hitSomething(event) {
-        if (event.other.owner instanceof Fish) {
+        if (event.other.owner instanceof Obstacle) {
             event.other.owner.diedByPlayer();
             this.kill()
         }
