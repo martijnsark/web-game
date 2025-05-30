@@ -18,11 +18,11 @@ export class Game extends Engine {
                 gravity: new Vector(0, 800),
             }
         })
-        this.start(ResourceLoader).then(() => this.startGame())
+        this.start(ResourceLoader).then(() => this.#startGame())
         this.showDebug(true)
     }
 
-    startGame() {
+    #startGame() {
         this.add('level1', new Level1());
         this.add('gameover', new GameOver());
         this.goToScene('level1');

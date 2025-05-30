@@ -10,11 +10,11 @@ export class Background extends Actor {
         this.scale = new Vector(1, 1)
         this.pos = new Vector(x, y)
         this.vel = new Vector(-150, 0)
-        this.events.on("exitviewport", (e) => this.backgroundLeft(e))
+        this.events.on("exitviewport", (e) => this.#backgroundLeft(e))
     }
 
     //reset background scroll position
-    backgroundLeft(e) {
+    #backgroundLeft(e) {
         this.pos = new Vector(2275, 514)
     }
 

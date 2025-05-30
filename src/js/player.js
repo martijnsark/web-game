@@ -10,12 +10,16 @@ import { Heart } from "./heart.js"
 export class Player extends Actor {
 
 
-    //traits (these get rememberd)
-    score
-    lives
-    playerNumber
-    isOnGround
-    scoreFrameCounter
+    //Private 
+    #score;
+    #lives;
+    #isOnGround;
+    #scoreFrameCounter;
+    #initialX;
+    #canShoot;
+    #shootCooldownTimer;
+    #playerNumber;
+
 
 
     //constructor for players (default features)
@@ -27,19 +31,19 @@ export class Player extends Actor {
         this.pos = new Vector(x, y)
 
         //score variables
-        this.score = 0;
+        this.#score = 0;
 
         //lives
-        this.lives = 3;
+        this.#lives = 3;
 
         //player identifier
-        this.playerNumber = playerNumber;
+        this.#playerNumber = playerNumber;
 
         //sprite(s)
         this.graphics.use(Resources.Fish1.toSprite());
 
         //restrictions
-        this.initialX = x;
+        this.#initialX = x;
         this.body.limitDegreeOfFreedom.push(DegreeOfFreedom.Rotation);
 
         //physics
@@ -47,19 +51,19 @@ export class Player extends Actor {
         this.bounciness = 1;
 
         //player status
-        this.isOnGround = true;
-        this.canShoot = true;
+        this.#isOnGround = true;
+        this.#canShoot = true;
 
         //timers
-        this.scoreFrameCounter = 0
-        this.shootCooldownTimer = null;
+        this.#scoreFrameCounter = 0
+        this.#shootCooldownTimer = null;
 
         //shooting
-        this.canShoot = true;
+        this.#canShoot = true;
 
         //activate events if user leaves screen (just in case)
-        this.events.on("exitviewport", (e) => this.playerTop(e))
-        this.events.on("exitviewport", (e) => this.playerDown(e))
+        this.events.on("exitviewport", (e) => this.#playerTop(e))
+        this.events.on("exitviewport", (e) => this.#playerDown(e))
     }
 
 
@@ -67,19 +71,19 @@ export class Player extends Actor {
     onInitialize(engine) {
         this.on('collisionstart', (event) => this.hitSomething(event))
 
-        this.shootCooldownTimer = new Timer({
-            fcn: () => { this.canShoot = true; },
+        this.#shootCooldownTimer = new Timer({
+            fcn: () => { this.#canShoot = true; },
             interval: 5000,
             repeats: false
         });
-        engine.currentScene.add(this.shootCooldownTimer);
+        engine.currentScene.add(this.#shootCooldownTimer);
     }
 
 
     //check collisions between players and other objects
     hitSomething(event) {
         if (event.other.owner instanceof Floor) {
-            this.isOnGround = true;
+            this.#isOnGround = true;
         }
         if (event.other.owner instanceof Fish) {
             event.other.owner.diedByPlayer();
@@ -88,7 +92,7 @@ export class Player extends Actor {
         }
         if (event.other.owner instanceof Heart) {
             event.other.owner.diedByPlayer();
-            if (this.lives < 3) {
+            if (this.#lives < 3) {
                 this.addLives();
             }
         }
@@ -103,50 +107,50 @@ export class Player extends Actor {
 
     //if on ground jump and reset on ground status
     jump() {
-        if (this.isOnGround) {
+        if (this.#isOnGround) {
             this.body.applyLinearImpulse(new Vector(0, -10000));
-            this.isOnGround = false;
+            this.#isOnGround = false;
         }
     }
 
 
     //add points to correct player and to the correct label
     addScore() {
-        this.score++;
-        if (this.playerNumber === 1 && this.scene.scoreLabel1) {
-            this.scene.scoreLabel1.updateScore(this.score);
+        this.#score++;
+        if (this.#playerNumber === 1 && this.scene.scoreLabel1) {
+            this.scene.scoreLabel1.updateScore(this.#score);
         }
-        if (this.playerNumber === 2 && this.scene.scoreLabel2) {
-            this.scene.scoreLabel2.updateScore(this.score);
+        if (this.#playerNumber === 2 && this.scene.scoreLabel2) {
+            this.scene.scoreLabel2.updateScore(this.#score);
         }
     }
 
 
     //add lives to correct player and to the correct label
     addLives() {
-        this.lives++;
-        if (this.playerNumber === 1 && this.scene.liveTracker1) {
-            this.scene.liveTracker1.updateLives(this.lives);
+        this.#lives++;
+        if (this.#playerNumber === 1 && this.scene.liveTracker1) {
+            this.scene.liveTracker1.updateLives(this.#lives);
         }
-        if (this.playerNumber === 2 && this.scene.liveTracker2) {
-            this.scene.liveTracker2.updateLives(this.lives);
+        if (this.#playerNumber === 2 && this.scene.liveTracker2) {
+            this.scene.liveTracker2.updateLives(this.#lives);
         }
     }
 
 
     //remove lives to correct player and to the correct label
     removeLives() {
-        this.lives--;
-        if (this.playerNumber === 1 && this.scene.liveTracker1) {
-            this.scene.liveTracker1.updateLives(this.lives);
+        this.#lives--;
+        if (this.#playerNumber === 1 && this.scene.liveTracker1) {
+            this.scene.liveTracker1.updateLives(this.#lives);
         }
-        if (this.playerNumber === 2 && this.scene.liveTracker2) {
-            this.scene.liveTracker2.updateLives(this.lives);
+        if (this.#playerNumber === 2 && this.scene.liveTracker2) {
+            this.scene.liveTracker2.updateLives(this.#lives);
         }
     }
 
     playerDied() {
-        if (this.lives === 0) {
+        if (this.#lives === 0) {
             this.kill();
             if (this.scene.playerDied) {
                 this.scene.playerDied();
@@ -159,49 +163,49 @@ export class Player extends Actor {
 
     onPreUpdate(engine) {
         let kb = engine.input.keyboard
-        this.pos.x = this.initialX;
+        this.pos.x = this.#initialX;
 
         //simpel shooting based on player and controles
-        if (this.playerNumber === 1 && kb.wasPressed(Keys.E) && this.canShoot) {
+        if (this.#playerNumber === 1 && kb.wasPressed(Keys.E) && this.#canShoot) {
             this.shoot();
-            this.canShoot = false;
-            this.shootCooldownTimer.reset();
-            this.shootCooldownTimer.start();
+            this.#canShoot = false;
+            this.#shootCooldownTimer.reset();
+            this.#shootCooldownTimer.start();
         }
 
-        if (this.playerNumber === 2 && kb.wasPressed(Keys.Enter) && this.canShoot) {
+        if (this.#playerNumber === 2 && kb.wasPressed(Keys.Enter) && this.#canShoot) {
             this.shoot();
-            this.canShoot = false;
-            this.shootCooldownTimer.reset();
-            this.shootCooldownTimer.start();
+            this.#canShoot = false;
+            this.#shootCooldownTimer.reset();
+            this.#shootCooldownTimer.start();
         }
 
         //simpel jumping based on player and controles + collision with ground
-        if (this.playerNumber === 1 && kb.wasPressed(Keys.Space)) {
+        if (this.#playerNumber === 1 && kb.wasPressed(Keys.Space)) {
             this.jump()
         }
 
-        if (this.playerNumber === 2 && kb.wasPressed(Keys.ShiftRight)) {
+        if (this.#playerNumber === 2 && kb.wasPressed(Keys.ShiftRight)) {
             this.jump()
         }
     }
 
     //update player score based on framerate
     onPostUpdate(engine) {
-        this.scoreFrameCounter++
-        if (this.scoreFrameCounter > 60) {
+        this.#scoreFrameCounter++
+        if (this.#scoreFrameCounter > 60) {
             this.addScore();
-            this.scoreFrameCounter = 0
+            this.#scoreFrameCounter = 0
         }
     }
 
     //out of screen up reset
-    playerTop(e) {
-        this.pos = new Vector(this.initialX, 900)
+    #playerTop(e) {
+        this.pos = new Vector(this.#initialX, 900)
     }
 
     //out of screen down reset
-    playerDown(e) {
-        this.pos = new Vector(this.initialX, 900)
+    #playerDown(e) {
+        this.pos = new Vector(this.#initialX, 900)
     }
 }

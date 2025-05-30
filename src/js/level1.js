@@ -7,8 +7,10 @@ import { Fish } from './fish.js';
 import { Heart } from './heart.js';
 
 export class Level1 extends Scene {
+    #alivePlayers
+
     onInitialize(engine) {
-        this.alivePlayers = 2;
+        this.#alivePlayers = 2;
 
 
         this.add(new Background(0, 514))
@@ -32,8 +34,6 @@ export class Level1 extends Scene {
         this.add(this.player1);
         this.add(this.player2);
 
-
-
         for (let i = 0; i < 1; i++) {
             this.add(new Fish());
             this.add(new Heart());
@@ -41,14 +41,14 @@ export class Level1 extends Scene {
     }
 
     playerDied() {
-        this.alivePlayers--;
+        this.#alivePlayers--;
 
-        if (this.alivePlayers <= 0) {
+        if (this.#alivePlayers <= 0) {
             this.engine.goToScene('gameover');
         }
     }
 
-    gameOver() {
+    #gameOver() {
         this.engine.goToScene('gameover')
     }
 }

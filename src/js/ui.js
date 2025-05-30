@@ -1,6 +1,7 @@
 import { Label, Font, FontUnit, Color, Vector } from "excalibur"
 
 export class UI extends Label {
+    #playerNumber
 
     //constructor for labels (default features)
     constructor(x, y, playerNumber, text) {
@@ -14,16 +15,16 @@ export class UI extends Label {
                 color: Color.Black
             })
         });
-        this.playerNumber = playerNumber;
+        this.#playerNumber = playerNumber;
     }
 
     //updates score by entering text + playernumber + actual score
     updateScore(score) {
-        this.text = `Score P${this.playerNumber}: ${score}`;
+        this.text = `Score P${this.#playerNumber}: ${score}`;
     }
 
     
     updateLives(lives) {
-       this.text = `P${this.playerNumber} remaining lives: ${lives}`;
+       this.text = `P${this.#playerNumber} remaining lives: ${lives}`;
     }
 }
