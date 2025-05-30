@@ -2,7 +2,7 @@ import { Scene } from "excalibur";
 import { Background } from './background.js'
 import { Player } from './player.js'
 import { UI } from './ui.js'
-import { Floor } from './Floor.js'
+import { Floor } from './floor.js'
 import { Fish } from './fish.js';
 import { Heart } from './heart.js';
 
