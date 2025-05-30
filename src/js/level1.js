@@ -5,10 +5,13 @@ import { Player } from './player.js'
 import { UI } from './ui.js'
 import { Floor } from './Floor.js'
 import { GameOver } from './gameover.js'
+import { Fish } from './fish.js';
+import { Heart } from './heart.js';
 
 export class Level1 extends Scene {
     onInitialize(engine) {
         this.alivePlayers = 2;
+
 
         this.add(new Background(0, 514))
         this.add(new Background(1535, 514))
@@ -29,9 +32,12 @@ export class Level1 extends Scene {
         this.add(new Player(120, 900, 1));
         this.add(new Player(400, 900, 2));
 
+
+
         for (let i = 0; i < 1; i++) {
-            let obstacle = new Obstacle()
-            this.add(obstacle)
+            this.add(new Fish());
+
+            this.add(new Heart());
         }
     }
 

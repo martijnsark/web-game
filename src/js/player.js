@@ -1,8 +1,10 @@
 import { Actor, Vector, Keys, CollisionType, DegreeOfFreedom, Timer } from "excalibur"
 import { Resources, ResourceLoader, } from './resources.js'
-import { Obstacle } from './obstacle.js'
 import { Arrow } from './Arrow.js'
 import { Floor } from './Floor.js'
+import { Fish } from './fish.js'
+import { Heart } from "./heart.js"
+
 
 
 export class Player extends Actor {
@@ -79,10 +81,16 @@ export class Player extends Actor {
         if (event.other.owner instanceof Floor) {
             this.isOnGround = true;
         }
-        if (event.other.owner instanceof Obstacle) {
+        if (event.other.owner instanceof Fish) {
             event.other.owner.diedByPlayer();
             this.removeLives();
             this.playerDied();
+        }
+        if (event.other.owner instanceof Heart) {
+            event.other.owner.diedByPlayer();
+            if (this.lives < 3) {
+                this.addLives();
+            }
         }
     }
 
