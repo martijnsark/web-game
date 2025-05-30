@@ -1,5 +1,5 @@
-import { Actor, Vector, Engine, ExitViewPortEvent } from "excalibur"
-import { Resources, ResourceLoader } from './resources.js'
+import { Actor, Vector } from "excalibur"
+import { Resources } from './resources.js'
 import { Fish } from './fish.js'
 
 export class Arrow extends Actor {

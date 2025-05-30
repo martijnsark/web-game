@@ -1,10 +1,8 @@
 import { Scene } from "excalibur";
-import { Obstacle } from './obstacle.js'
 import { Background } from './background.js'
 import { Player } from './player.js'
 import { UI } from './ui.js'
 import { Floor } from './Floor.js'
-import { GameOver } from './gameover.js'
 import { Fish } from './fish.js';
 import { Heart } from './heart.js';
 
@@ -29,20 +27,22 @@ export class Level1 extends Scene {
         this.add(this.liveTracker1);
         this.add(this.liveTracker2);
 
-        this.add(new Player(120, 900, 1));
-        this.add(new Player(400, 900, 2));
+        this.player1 = new Player(120, 900, 1);
+        this.player2 = new Player(400, 900, 2);
+        this.add(this.player1);
+        this.add(this.player2);
 
 
 
         for (let i = 0; i < 1; i++) {
             this.add(new Fish());
-
             this.add(new Heart());
         }
     }
 
     playerDied() {
         this.alivePlayers--;
+
         if (this.alivePlayers <= 0) {
             this.engine.goToScene('gameover');
         }

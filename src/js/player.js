@@ -1,5 +1,5 @@
 import { Actor, Vector, Keys, CollisionType, DegreeOfFreedom, Timer } from "excalibur"
-import { Resources, ResourceLoader, } from './resources.js'
+import { Resources } from './resources.js'
 import { Arrow } from './Arrow.js'
 import { Floor } from './Floor.js'
 import { Fish } from './fish.js'

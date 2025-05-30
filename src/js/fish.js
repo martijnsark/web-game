@@ -12,14 +12,7 @@ export class Fish extends Obstacle {
         this.events.on("exitviewport", (e) => this.obstacleLeft(e))
     }
 
-    //if Fish is not moving reset velocity
-    onPreUpdate(engine) {
-        if (this.vel.x > -300) {
-            this.vel = new Vector(-300, 0)
-        }
-    }
-
-     //if player removed Heart reset back alive and position
+    //if player removed Heart reset back alive and position
     diedByPlayer() {
         this.unkill
         this.pos = new Vector(1500, 900)

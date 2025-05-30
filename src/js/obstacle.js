@@ -17,4 +17,11 @@ export class Obstacle extends Actor {
             this.graphics.use(sprite);
         }
     }
+
+    //if obstacle is not moving reset velocity
+    onPreUpdate(engine) {
+        if (this.vel.x > -300) {
+            this.vel = new Vector(-300, 0)
+        }
+    }
 }

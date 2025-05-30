@@ -1,5 +1,4 @@
 import { Scene, Label, Vector, Color, Font, FontUnit } from "excalibur";
-import { UI } from './ui.js'
 
 export class GameOver extends Scene {
 

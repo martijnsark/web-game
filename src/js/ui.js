@@ -1,5 +1,4 @@
-import { Actor, Label, Font, FontUnit, Color, Vector } from "excalibur"
-import { Resources, ResourceLoader } from './resources.js'
+import { Label, Font, FontUnit, Color, Vector } from "excalibur"
 
 export class UI extends Label {
 

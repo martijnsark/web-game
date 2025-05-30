@@ -1,6 +1,6 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, Label, FontUnit, Color, Font, SolverStrategy } from "excalibur"
-import { Resources, ResourceLoader } from './resources.js'
+import { Engine, Vector, DisplayMode, SolverStrategy } from "excalibur"
+import { ResourceLoader } from './resources.js'
 import { Level1 } from './level1.js';
 import { GameOver } from './gameover.js';
 

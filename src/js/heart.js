@@ -1,10 +1,10 @@
 import { Obstacle } from './obstacle.js';
 import { Resources } from './resources.js';
-import { Vector} from "excalibur";
+import { Vector } from "excalibur";
 
 export class Heart extends Obstacle {
     constructor() {
-       super(
+        super(
             1800, 900,
             Resources.Heart.toSprite()
         );
@@ -12,15 +12,7 @@ export class Heart extends Obstacle {
         this.events.on("exitviewport", (e) => this.obstacleLeft(e))
     }
 
-
-    //if Heart is not moving reset velocity
-    onPreUpdate(engine) {
-        if (this.vel.x > -300) {
-            this.vel = new Vector(-300, 0)
-        }
-    }
-
-     //if player removed Heart reset back alive and position
+    //if player removed Heart reset back alive and position
     diedByPlayer() {
         this.unkill
         this.pos = new Vector(1800, 900)
