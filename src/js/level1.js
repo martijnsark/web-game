@@ -1,6 +1,6 @@
 import { Scene } from "excalibur";
 import { Obstacle } from './obstacle.js'
-import { WaterBackground } from './background.js'
+import { Background } from './background.js'
 import { Player } from './player.js'
 import { UI } from './ui.js'
 import { Floor } from './Floor.js'
@@ -10,8 +10,8 @@ export class Level1 extends Scene {
     onInitialize(engine) {
         this.alivePlayers = 2;
 
-        this.add(new WaterBackground(0, 514))
-        this.add(new WaterBackground(1535, 514))
+        this.add(new Background(0, 514))
+        this.add(new Background(1535, 514))
 
         this.add(new Floor(500, 1080))
         this.add(new Floor(1500, 1080))

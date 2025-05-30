@@ -1,7 +1,7 @@
 import { Actor, Vector } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 
-export class WaterBackground extends Actor {
+export class Background extends Actor {
 
     //constructor for backgrounds (default features)
     constructor(x, y){
