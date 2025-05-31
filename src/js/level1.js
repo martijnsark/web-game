@@ -47,8 +47,4 @@ export class Level1 extends Scene {
             this.engine.goToScene('gameover');
         }
     }
-
-    #gameOver() {
-        this.engine.goToScene('gameover')
-    }
 }
